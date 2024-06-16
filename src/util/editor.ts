@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 
 
 export function commentText() {
-	let cmdStr = "console.";
+	let commentRgx = /([ ]*)(console.*$)/;
 	let commentStr = "// ";
 	const editor = vscode.window.activeTextEditor;
 	if (editor) {
@@ -11,8 +11,9 @@ export function commentText() {
 		editor.edit((edit) => {
 			for (let i = 0; i < docs.lineCount; i++) {
 				let line = docs.lineAt(i);
-				if (line.text.startsWith(cmdStr)) {
-					let pos = new Position(line.lineNumber, 0);
+				let matches = line.text.match(commentRgx);
+				if (matches && matches.length>1) {
+					let pos = new Position(line.lineNumber, matches[1].length);
 					edit.insert(pos, commentStr);
 				}
 			}
@@ -23,7 +24,7 @@ export function commentText() {
 }
 
 export function uncommentText(){
-	let commentRgx = /(^\/\/[ ]*)(console.*$)/;
+	let commentRgx = /([ ]*)(\/\/[ ]*)(console.*$)/;
 
 	const editor = vscode.window.activeTextEditor;
 	if (editor) {
@@ -31,11 +32,11 @@ export function uncommentText(){
 		editor.edit((edit) => {
 			for (let i = 0; i < docs.lineCount; i++) {
 				let line = docs.lineAt(i);
-
 				let matches = line.text.match(commentRgx);
 				if (matches && matches.length > 1) {
 					let range = new vscode.Range(line.range.start, line.range.end);
-					edit.replace(range, matches[2]);
+					let newText = `${matches[1]}${matches[3]}`;
+					edit.replace(range, newText);
 				}
 			}
 		});
