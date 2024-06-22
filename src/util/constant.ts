@@ -1,26 +1,29 @@
 import { CommentPtn } from "../type/type";
 
-const js: CommentPtn = {
-    without_comment: /([ ]*)((console\.).*$)/,
-    with_comment: /([ ]*)(\/\/[ ]*)((console\.).*$)/
-};
+function createCommentPtn(commentSymbol : string, logSyntax : string) : CommentPtn{
+    return {
+        without_comment: new RegExp(`^( *)((${logSyntax}).*)$`),
+        with_comment: new RegExp(`^( *)(${commentSymbol} *)((${logSyntax}).*)$`)
+    };
+}
 
-const java: CommentPtn = {
-    without_comment: /([ ]*)((System\.out\.print).*$)/,
-    with_comment: /([ ]*)(\/\/[ ]*)((System\.out\.print).*$)/
-};
+const slash = `\\/\\/`;
+const htag = `\\#`;
 
-const go: CommentPtn = {
-    without_comment:/([ ]*)((fmt\.Print|fmt\.Sprint).*$)/,
-    with_comment:/([ ]*)(\/\/[ ]*)((fmt\.Print|fmt\.Sprint).*$)/,
-};
-
-//fmt.Sprintf
+const js = createCommentPtn(slash,'console\\.log')
+const java = createCommentPtn(slash,'System\\.out\\.print');
+const go = createCommentPtn(slash, 'fmt\\.Print|fmt\\.Sprint');
+const cpp = createCommentPtn(slash,'cout[ ]*<<');
+const py = createCommentPtn(htag, 'print[ ]*\\(')
+const bash = createCommentPtn(htag, 'echo[ ]+')
 
 export const PATTERN: Record<string, CommentPtn> = {
     javascript: js,
     typescript: js,
     java: java,
     go:go,
+    cpp:cpp,
+    shellscript:bash,
+    python:py,
 };
 

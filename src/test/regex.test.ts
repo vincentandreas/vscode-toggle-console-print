@@ -9,8 +9,11 @@ describe('Test regex', () => {
                 "    console.log('Indented');"
             ],
             with_comment: [
-                "// console.log('Commented out');",
+                "//console.log('Commented out');",
                 "    // console.log('Indented and commented out');"
+            ],
+            shouldnt_match:[
+                `let str = console.log("asdfsdf")`            
             ]
         },
         {
@@ -21,7 +24,10 @@ describe('Test regex', () => {
             ],
             with_comment: [
                 "// System.out.print('Commented out');",
-                "    // System.out.print('Indented and commented out');"
+                "    //System.out.print('Indented and commented out');"
+            ],
+            shouldnt_match:[
+                `if(System.out.print('asdfsadf'))`
             ]
         },
         {
@@ -32,14 +38,65 @@ describe('Test regex', () => {
                 "    fmt.Print('Indented');"
             ],
             with_comment: [
-                "// fmt.Print('Commented out');",
+                "//fmt.Print('Commented out');",
                 "// fmt.Sprint('Commented out');",
                 "    // fmt.Print('Indented and commented out');"
+            ],
+            shouldnt_match:[
+                `fmt .Println('test')`
+            ]
+        },
+        {
+            language: 'cpp',
+            without_comment:[
+                `cout << "Commented";`,
+                `cout<< "Commented";`,
+                `       cout<< "Commented";`
+            ],
+            with_comment: [
+                `//cout << "Commented";`,
+                `//     cout<< "Commented";`,
+                `       //cout<< "Commented";`
+            ],
+            shouldnt_match:[
+                `int cout1 = 12`
+            ]
+        },
+        {
+            language: 'shellscript',
+            without_comment: [
+                `echo "Commented"`,
+                `echo "Another comment"`,
+                `   echo "Indented comment"`
+            ],
+            with_comment: [
+                `#echo "Commented"`,
+                `#   echo "Another comment"`,
+                `   #echo "Indented comment"`
+            ],
+            shouldnt_match: [
+                `echoVariable="Not a print statement"`
+            ]
+        },
+        {
+            language: 'python',
+            without_comment: [
+                `print("Commented")`,
+                `print ("Commented")`,
+                `   print ("Commented")`
+            ],
+            with_comment: [
+                `#print("Commented")`,
+                `#   print ("Commented")`,
+                `   #print ("Commented")`
+            ],
+            shouldnt_match: [
+                `print1 = 12`
             ]
         }
     ];
 
-    testCases.forEach(({ language, without_comment, with_comment }) => {
+    testCases.forEach(({ language, without_comment, with_comment,shouldnt_match }) => {
         describe(`Language: ${language}`, () => {
             const pattern = PATTERN[language];
 
@@ -68,6 +125,19 @@ describe('Test regex', () => {
                     }
                 });
             });
+
+            test('Should not match invalid lines', () =>{
+                shouldnt_match.forEach(line => {
+                    let expected = false;
+                    let currPattern = pattern.without_comment;
+                    try{
+                        expect(currPattern.test(line)).toEqual(expected);
+                    }catch(err){
+                        console.log(`Pattern : ${currPattern} | Txt : [${line}] | Expected [${expected}]`);
+                        throw err;
+                    }
+                });
+            })
         });
     });
 });

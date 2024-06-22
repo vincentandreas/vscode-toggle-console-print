@@ -1,7 +1,7 @@
 {
   "name": "toggle-console-print",
-  "displayName": "toggle-console-print",
-  "description": "for disable and enable log / print command in file",
+  "displayName": "Comment Uncomment Console [CUC]",
+  "description": "For disable and enable multiple log / print command in file. Currently support js, ts, java, c++, go",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.90.0"
@@ -19,11 +19,11 @@
       },
       {
         "command": "toggle-console-print.comment",
-        "title": "Toggle console : comment"
+        "title": "CUC : Comment console"
       },
       {
         "command": "toggle-console-print.uncomment",
-        "title": "Toggle console : uncomment"
+        "title": "CUC : Uncomment console"
       }
     ]
   },
