@@ -1,8 +1,6 @@
-import * as assert from 'assert';
-import * as vscode from 'vscode';
-import { PATTERN } from '../util/constant';
+import { PATTERN } from "../util/constant";
 
-suite('Test regex', () => {
+describe('Test regex', () => {
     const testCases = [
         {
             language: 'javascript',
@@ -42,7 +40,7 @@ suite('Test regex', () => {
     ];
 
     testCases.forEach(({ language, without_comment, with_comment }) => {
-        suite(`Language: ${language}`, () => {
+        describe(`Language: ${language}`, () => {
             const pattern = PATTERN[language];
 
             test('should match uncommented print lines', () => {
@@ -50,7 +48,7 @@ suite('Test regex', () => {
                     let expected = true;
                     let currPattern = pattern.without_comment;
                     try{
-                        assert.equal(currPattern.test(line), expected);
+                        expect(currPattern.test(line)).toEqual(expected);
                     }catch(err){
                         console.log(`Pattern : ${currPattern} | Txt : [${line}] | Expected [${expected}]`);
                         throw err;
@@ -63,7 +61,7 @@ suite('Test regex', () => {
                     let expected = true;
                     let currPattern = pattern.with_comment;
                     try{
-                        assert.equal(currPattern.test(line), expected);
+                        expect(currPattern.test(line)).toEqual(expected);
                     }catch(err){
                         console.log(`Pattern : ${currPattern} | Txt : [${line}] | Expected [${expected}]`);
                         throw err;
