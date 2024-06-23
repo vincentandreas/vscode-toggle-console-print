@@ -2,8 +2,6 @@ import * as vscode from 'vscode';
 import { commentText, uncommentText } from './backend/editor';
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Congratulations, your extension "toggle-console-print" is now active!');
-
 	const disposComment = vscode.commands.registerCommand('toggle-console-print.comment', () => {
 		commentText();
 	});
