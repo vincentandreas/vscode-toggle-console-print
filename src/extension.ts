@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { commentText, uncommentText } from './util/editor';
+import { commentText, uncommentText } from './backend/editor';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "toggle-console-print" is now active!');
