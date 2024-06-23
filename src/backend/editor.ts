@@ -60,7 +60,7 @@ function getLineRange(editor: vscode.TextEditor) {
 
 	if (selection.start.character !== selection.end.character || selection.start.line !== selection.end.line) {
 		start = selection.start.line;
-		end = selection.end.line;
+		end = selection.end.line + 1;
 	}
 	return {
 		start,

@@ -6,11 +6,13 @@ describe('Test regex', () => {
             language: 'javascript',
             without_comment: [
                 "console.log('Hello, world!');",
-                "    console.log('Indented');"
+                "    console.log('Indented');",
+                "	console.log('Using tab');"
             ],
             with_comment: [
                 "//console.log('Commented out');",
-                "    // console.log('Indented and commented out');"
+                "    // console.log('Indented and commented out');",
+                "		//			console.log('Using tab and commented out');"
             ],
             shouldnt_match:[
                 `let str = console.log("asdfsdf")`            
@@ -35,7 +37,8 @@ describe('Test regex', () => {
             without_comment: [
                 "fmt.Print('Hello, world!');",
                 "fmt.Sprint('Hello, world!');",
-                "    fmt.Print('Indented');"
+                "    fmt.Print('Indented');",
+                `	fmt.Printf("[Using Tab] Package  %q\n", pkg.Path())`
             ],
             with_comment: [
                 "//fmt.Print('Commented out');",
